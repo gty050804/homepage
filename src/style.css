@@ -1,0 +1,178 @@
+/* =========================================
+   🎨 1. 全局主题变量系统 (Theming System)
+   ========================================= */
+
+/* 🌞 默认模式 (Light Mode) */
+:root {
+  /* 基础字体设置 */
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* --- 颜色变量 --- */
+  
+  /* 文字颜色 */
+  --text-primary: #2c3e50;       /* 深色主标题 */
+  --text-secondary: #666666;     /* 浅灰副标题 */
+  --text-highlight: #42b883;     /* Vue 绿高亮 */
+  
+  /* 玻璃卡片 (关键！白底半透明) */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: rgba(0, 0, 0, 0.15);
+  
+  /* 侧边栏背景 */
+  --sidebar-bg: rgba(255, 255, 255, 0.2);
+  
+  /* 全局遮罩 (白天是全透明) */
+  --bg-overlay: rgba(0, 0, 0, 0); 
+}
+
+/* 🌙 夜间模式 (Dark Mode) */
+html.dark {
+  /* --- 1. 文字颜色 (反白) --- */
+  --text-primary: #ffffff;       /* 纯白主标题，在深色玻璃上最清晰 */
+  --text-secondary: #aaaaaa;     /* 浅灰副标题 */
+  --text-highlight: #42b883;     /* 高亮色 */
+  
+  /* --- 2. 暗黑玻璃效果 (关键修改) --- */
+  /* 背景：由白变黑，且稍微深一点，保证文字可读性 */
+  --glass-bg: rgba(0, 0, 0, 0.6); 
+  
+  /* 边框：在暗色背景下，依然需要一点点白色的光泽来区分边缘 */
+  --glass-border: rgba(255, 255, 255, 0.295); 
+  
+  /* 阴影：加深阴影，增加层次感 */
+  --glass-shadow: rgba(0, 0, 0, 0.8);
+  
+  /* --- 3. 侧边栏 --- */
+  --sidebar-bg: rgba(0, 0, 0, 0.4);
+  
+  /* --- 4. 遮罩层 (你说不需要，所以设为透明) --- */
+  --bg-overlay: transparent; 
+}
+
+/* =========================================
+   🛠️ 2. 全局重置 (Global Reset)
+   ========================================= */
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* 防止出现双重滚动条 */
+  
+  /* 使用变量控制文字颜色 */
+  color: var(--text-primary);
+  /* 平滑过渡动画 */
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* 让所有元素在切换模式时都有过渡效果 */
+div, p, h1, h2, h3, span, a, button {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+/* 链接基础样式 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* =========================================
+   📚 3. Markdown 通用排版 (Article Typography)
+   作用：让文章详情页的 HTML 自动变好看
+   ========================================= */
+
+/* 针对 Markdown 内容的容器 */
+.markdown-body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary); /* 跟随主题变色 */
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* 标题 */
+.markdown-body h2 {
+  font-size: 1.5rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--glass-border); /* 分割线跟随主题 */
+  padding-bottom: 0.3em;
+}
+
+.markdown-body h3 {
+  font-size: 1.25rem;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  color: var(--text-highlight);
+  border-left: 4px solid var(--text-highlight);
+  padding-left: 10px;
+}
+
+/* 段落 */
+.markdown-body p {
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+/* 图片 */
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--glass-shadow); /* 阴影跟随主题 */
+  display: block;
+  margin: 20px auto;
+}
+
+/* 代码块 */
+.markdown-body code {
+  background-color: rgba(128, 128, 128, 0.15); /* 通用半透明灰，黑白模式都适用 */
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9em;
+  color: #d63200; /* 代码文字红一点 */
+}
+
+html.dark .markdown-body code {
+  color: #ff7b72; /* 夜间模式下代码文字亮一点 */
+}
+
+/* 引用块 */
+.markdown-body blockquote {
+  margin: 20px 0;
+  padding: 10px 20px;
+  color: var(--text-secondary);
+  border-left: 0.25em solid var(--glass-border);
+  background-color: var(--sidebar-bg); /* 跟随侧边栏颜色 */
+  font-style: italic;
+}
+
+/* 图片备注 (Figure & Figcaption) */
+.markdown-body figure {
+  margin: 30px 0;
+  text-align: center;
+}
+.markdown-body figcaption {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 5px;
+}
+.markdown-body a {
+
+  color: #3498db;
+
+  /* 强烈建议加个下划线，或者鼠标悬停时加下划线，增加辨识度 */
+  text-decoration: none; 
+  border-bottom: 1px dashed var(--text-highlight); /* 虚线底边，很极客 */
+  transition: all 0.2s;
+}
+
+/* 鼠标悬停时的效果 */
+.markdown-body a:hover {
+  background-color: rgba(66, 184, 131, 0.1); /* 淡淡的绿色背景 */
+  border-bottom-style: solid; /* 变成实线 */
+}
